@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.3.13",
+    "nodemon": "^1.18.6",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "name": "socket-io-messages",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "mattperkins <github@mattperkins.com>",
+  "license": "MIT"
+}
