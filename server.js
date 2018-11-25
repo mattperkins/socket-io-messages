@@ -20,8 +20,7 @@ const Message = mongoose.model('Message', {
 
 app.get('/messages', (req, res) => {
   Message.find({}, (err, messages) => {
-    if (err)
-      sendStatus(500)
+    if (err) res.sendStatus(500)
 
     res.send(messages)
   })
@@ -31,8 +30,7 @@ app.post('/messages', (req, res) => {
   // console.log(req.body)
   var message = new Message(req.body)
   message.save((err) => {
-    if (err)
-      sendStatus(500)
+    if (err) res.sendStatus(500)
 
     io.emit('message', req.body)
     res.sendStatus(200)
