@@ -29,12 +29,13 @@
     <div id="messages" class="pushDown-20 col-md-6"></div>
 
     <div class="jumbotron col-md-6">
-      <h1>Send message</h1>
-
-      <input id="name" type="text" class="form-control" placeholder="Name">
-      <textarea id="message" type="text" class="form-control" placeholder="Message"></textarea>
-      
-      <button id="send" class="btn btn-success">Send</button>
+      <h1>Send Message</h1>
+      <form id="reset">
+        <input id="name" type="text" class="form-control" placeholder="Name">
+        <textarea id="message" type="text" class="form-control" placeholder="Message"></textarea>
+        
+        <button id="send" class="btn btn-success">Send</button>
+      </form>
     </div> <!-- jumbotron -->
 
     </div><!-- /row -->
@@ -52,6 +53,7 @@
     $("#send").click(() => {
       var lemon = { name: $("#name").val(), message: $("#message").val()} 
       postMessage(lemon)
+      $('#reset').get(0).reset
     })
 
     getMessages()
