@@ -37,14 +37,17 @@ app.post('/messages', (req, res) => {
   })
 })
 
+// socket io
 io.on('connection', (socket) => {
   console.log('A User Connected!')
 })
 
+// mongo db
 mongoose.connect(dbUrl, { useNewUrlParser: true }, (err) => {
   console.log('mongoDb connection', err)
 })
 
+// node-http server
 const server = http.listen(3002, () => {
   console.log('Server listening on port', server.address().port)
 })
