@@ -28,26 +28,16 @@ app.get('/messages', (req, res) => {
   })
 })
 
-app.post('/messages', (req, res) => {
+app.post('/messages', async (req, res) => {
   // console.log(req.body)
   var message = new Message(req.body)
+  const savedMessage = await message.save()
+  console.log('saved', savedMessage)
 
-  message.save()
-    .then(() => {
-      console.log('saved')
-      return Message.findOne({ message: 'censored' })
-    })
-    .then(censored => {
-      if (censored) {
-        console.log('Censored word found', censored)
-        return Message.deleteOne({ _id: censored.id })
-      }
-      io.emit('message', req.body)
-      res.sendStatus(200)
-    })
-    .catch((err) => {
-      return console.log(err)
-    })
+  const censored = await Message.findOne({ message: 'censored' })
+  if (censored) await Message.deleteOne({ _id: censored.id })
+  else io.emit('message', req.body)
+  res.sendStatus(200)
 })
 
 // socket io
