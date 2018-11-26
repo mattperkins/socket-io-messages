@@ -7,6 +7,7 @@ const io = require('socket.io')(http)
 const mongoose = require('mongoose')
 
 const badWords = require('./badWords')
+const env = require('./env')
 
 // Middleware
 app.use(express.static(__dirname))
@@ -15,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 mongoose.Promise = Promise
 
-const dbUrl = 'mongodb://test:test1234@ds115874.mlab.com:15874/socket-io-messages'
+const dbUrl = env
 
 const Message = mongoose.model('Message', {
   name: String,
@@ -46,7 +47,7 @@ app.post('/messages', async (req, res) => {
     res.sendStatus(500)
     return console.log(err)
   } finally {
-    console.log('finally')
+    // console.log('finally')
   }
 })
 
