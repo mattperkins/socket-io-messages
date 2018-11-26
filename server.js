@@ -31,16 +31,21 @@ app.get('/messages', (req, res) => {
 })
 
 app.post('/messages', async (req, res) => {
-  // console.log(req.body)
-  var message = new Message(req.body)
-  // eslint-disable-next-line
-  const savedMessage = await message.save()
-  // console.log('saved', savedMessage)
+  try {
+    // console.log(req.body)
+    var message = new Message(req.body)
+    // eslint-disable-next-line
+    const savedMessage = await message.save()
+    // console.log('saved', savedMessage)
 
-  const censored = await Message.findOne({ message: badWords })
-  if (censored) await Message.deleteOne({ _id: censored.id })
-  else io.emit('message', req.body)
-  res.sendStatus(200)
+    const censored = await Message.findOne({ message: badWords })
+    if (censored) await Message.deleteOne({ _id: censored.id })
+    else io.emit('message', req.body)
+    res.sendStatus(200)
+  } catch (err) {
+    res.sendStatus(500)
+    return console.log(err)
+  }
 })
 
 // socket io
