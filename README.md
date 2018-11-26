@@ -1,3 +1,5 @@
+![Preview](socket-io-messages.png)
+
 # INSTALL 
 ## yarn 
 
