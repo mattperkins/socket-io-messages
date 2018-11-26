@@ -6,6 +6,8 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const mongoose = require('mongoose')
 
+const badWords = require('./badWords')
+
 // Middleware
 app.use(express.static(__dirname))
 app.use(bodyParser.json())
@@ -31,10 +33,11 @@ app.get('/messages', (req, res) => {
 app.post('/messages', async (req, res) => {
   // console.log(req.body)
   var message = new Message(req.body)
+  // eslint-disable-next-line
   const savedMessage = await message.save()
-  console.log('saved', savedMessage)
+  // console.log('saved', savedMessage)
 
-  const censored = await Message.findOne({ message: 'censored' })
+  const censored = await Message.findOne({ message: badWords })
   if (censored) await Message.deleteOne({ _id: censored.id })
   else io.emit('message', req.body)
   res.sendStatus(200)
