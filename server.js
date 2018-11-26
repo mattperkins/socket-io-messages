@@ -45,6 +45,8 @@ app.post('/messages', async (req, res) => {
   } catch (err) {
     res.sendStatus(500)
     return console.log(err)
+  } finally {
+    console.log('finally')
   }
 })
 
