@@ -11,6 +11,8 @@ app.use(express.static(__dirname))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+mongoose.Promise = Promise
+
 const dbUrl = 'mongodb://test:test1234@ds115874.mlab.com:15874/socket-io-messages'
 
 const Message = mongoose.model('Message', {
@@ -29,12 +31,23 @@ app.get('/messages', (req, res) => {
 app.post('/messages', (req, res) => {
   // console.log(req.body)
   var message = new Message(req.body)
-  message.save((err) => {
-    if (err) res.sendStatus(500)
 
-    io.emit('message', req.body)
-    res.sendStatus(200)
-  })
+  message.save()
+    .then(() => {
+      console.log('saved')
+      return Message.findOne({ message: 'censored' })
+    })
+    .then(censored => {
+      if (censored) {
+        console.log('Censored word found', censored)
+        return Message.deleteOne({ _id: censored.id })
+      }
+      io.emit('message', req.body)
+      res.sendStatus(200)
+    })
+    .catch((err) => {
+      return console.log(err)
+    })
 })
 
 // socket io
